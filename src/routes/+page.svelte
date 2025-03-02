@@ -17,7 +17,7 @@
 	<button class="m-auto p-1 border-1 rounded" onclick={() => removeCounter()}>Remove Counter</button>
 </div>
 
-<div class="grid grid-cols-3 gap-4">
+<div class="grid grid-cols-2 gap-3">
 	{#each Array(counters) as e}
 		<Counter/>
 		{e}

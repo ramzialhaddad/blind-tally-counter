@@ -1,8 +1,10 @@
 <script lang="ts">
-	let positive = 0;
-    let negative = 0;
-
-    let name = "Unnamed"
+	let positive = $state(0);
+    let negative = $state(0);
+    let name = $state("Unnamed");
+	let colour = $state('black');
+	let colours = ['red', 'blue', 'orange', 'green', 'yellow', 'black'];
+	let editing: boolean = $state(false);
 
     function addPositive(){
         positive++;
@@ -10,6 +12,10 @@
 
     function addNegative(){
         negative++;
+	}
+
+    function edit(){
+        editing = !editing;
 	}
 </script>
 
@@ -60,7 +66,9 @@
 	}
 
 	.button-red-front {
-		display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 		position: relative;
 		padding: 12px 27px;
 		border-radius: 12px;
@@ -158,19 +166,19 @@
     }
 
     .button-green-front {
-        display: block;
-        position: relative;
-        padding: 12px 27px;
-        border-radius: 12px;
-        font-size: 1.1rem;
-        color: white;
-        background: hsl(80, 100%, 34%);
-        will-change: transform;
-        transform: translateY(-4px);
-        transition:
-                transform
-                600ms
-                cubic-bezier(.3, .7, .4, 1);
+    	display: flex;
+		align-items: center;
+		justify-content: center;
+		position: relative;
+		padding: 12px 27px;
+		border-radius: 12px;
+		font-size: 1.1rem;
+		color: white;
+		background: hsl(80, 100%, 34%);
+		will-change: transform;
+		transform: translateY(-4px);
+		transition: transform 600ms cubic-bezier(.3, .7, .4, 1);
+		cursor: pointer;
     }
 
     @media (min-width: 768px) {
@@ -216,23 +224,50 @@
     }
 </style>
 
-<div class="border-1 rounded-2xl p-4 grid grid-cols-1 gap-y-2">
-	<p>{name}</p>
-	<button class="m-auto p-1 border-1 rounded bg-green-400" onclick={() => addPositive()}>Add Positive</button>
-	<button class="m-auto p-1 border-1 rounded bg-red-600" onclick={() => addNegative()}>Add Negative</button>
+<div class="border-1 rounded-2xl p-4 grid grid-cols-1 gap-y-10 relative">
+	<div class="flex justify-between items-center">
+		{#if editing}
+			<div class="flex flex-col gap-1">
+				<input style="color: {colour};" type="text" bind:value={name} class="border-1 text-3xl font-semibold">
+				<div class="flex gap-1">
+					{#each colours as c}
+						<button
+							class="aspect-square rounded-[50%]"
+							style="background: {c}; aspect-ratio:1; padding:0.5rem 1rem;"
+							aria-label={c}
+							onclick={() => colour = c}
+						></button>
+					{/each}
+				</div>
+			</div>
+		{:else}
+			<h1 style="color: {colour};" class="text-3xl font-semibold">{name}</h1>
+		{/if}
+		<button onclick={()=>edit()} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full cursor-pointer">
+			{#if editing}
+				Save
+			{:else}
+				Edit Name
+			{/if}
+
+		</button>
+	</div>
+
+<!--	<button class="m-auto p-1 border-1 rounded bg-green-400" onclick={() => addPositive()}>Add Positive</button>-->
+<!--	<button class="m-auto p-1 border-1 rounded bg-red-600" onclick={() => addNegative()}>Add Negative</button>-->
 
 	<!-- https://getcssscan.com/css-buttons-examples "Button 82" by Josh W Comeau-->
 	<button class="button-green-pushable">
 		<span class="button-green-shadow"></span>
 		<span class="button-green-edge"></span>
-		<span class="button-green-front text">
+		<span class="button-green-front text h-30">
 			Add Positive
     	</span>
 	</button>
 	<button class="button-red-pushable">
 		<span class="button-red-shadow"></span>
 		<span class="button-red-edge"></span>
-		<span class="button-red-front text">
+		<span class="button-red-front text h-30">
 			Add Negative
     	</span>
 	</button>
@@ -256,6 +291,4 @@
 			Test
 		</span>
 	</button> -->
-
-
 </div>
