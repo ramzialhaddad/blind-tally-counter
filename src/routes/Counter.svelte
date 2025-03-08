@@ -2,8 +2,8 @@
 	let positive = $state(0);
     let negative = $state(0);
     let name = $state("Unnamed");
-	let colour = $state('black');
-	let colours = ['red', 'blue', 'orange', 'green', 'yellow', 'black'];
+	let colour = $state('white');
+	let colours = ['red', 'blue', 'orange', 'green', 'yellow', 'white'];
 	let editing: boolean = $state(false);
 
     function addPositive(){
@@ -56,13 +56,7 @@
 		width: 100%;
 		height: 100%;
 		border-radius: 12px;
-		background: linear-gradient(
-			to left,
-			hsl(340deg 100% 16%) 0%,
-			hsl(340deg 100% 32%) 8%,
-			hsl(340deg 100% 32%) 92%,
-			hsl(340deg 100% 16%) 100%
-		);
+		background: hsl(340deg 100% 32%);
 	}
 
 	.button-red-front {

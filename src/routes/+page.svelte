@@ -13,8 +13,8 @@
 </script>
 
 <div class="grid grid-cols-1 gap-y-2">
-	<button class="m-auto p-1 border-1 rounded" onclick={() => addCounter()}>Add Counter</button>
-	<button class="m-auto p-1 border-1 rounded" onclick={() => removeCounter()}>Remove Counter</button>
+	<button class="m-auto p-1 border-1 rounded text-white" onclick={() => addCounter()}>Add Counter</button>
+	<button class="m-auto p-1 border-1 rounded text-white" onclick={() => removeCounter()}>Remove Counter</button>
 </div>
 
 <div class="grid grid-cols-2 gap-3">
