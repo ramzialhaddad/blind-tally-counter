@@ -1,10 +1,20 @@
 <script lang="ts">
+	let {showValues} = $props();
+
 	let positive = $state(0);
     let negative = $state(0);
-    let name = $state("Unnamed");
+    let name = $state("Untitled");
 	let colour = $state('white');
 	let colours = ['red', 'blue', 'orange', 'green', 'yellow', 'white'];
 	let editing: boolean = $state(false);
+
+    // Convert this to explicit type so typescript isnt angry in line 231
+    let borderColour = {'white':'border-white',
+						'red':'border-red-500',
+        				'blue':'border-blue-500',
+						'orange':'border-orange-500',
+						'green':'border-green-500',
+						'yellow':'border-yellow-500',};
 
     function addPositive(){
         positive++;
@@ -218,71 +228,77 @@
     }
 </style>
 
-<div class="border-1 rounded-2xl p-4 grid grid-cols-1 gap-y-10 relative">
-	<div class="flex justify-between items-center">
-		{#if editing}
-			<div class="flex flex-col gap-1">
-				<input style="color: {colour};" type="text" bind:value={name} class="border-1 text-3xl font-semibold">
-				<div class="flex gap-1">
-					{#each colours as c}
-						<button
-							class="aspect-square rounded-[50%]"
-							style="background: {c}; aspect-ratio:1; padding:0.5rem 1rem;"
-							aria-label={c}
-							onclick={() => colour = c}
-						></button>
-					{/each}
-				</div>
-			</div>
-		{:else}
-			<h1 style="color: {colour};" class="text-3xl font-semibold">{name}</h1>
-		{/if}
-		<button onclick={()=>edit()} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full cursor-pointer">
+<div class="border-2 {borderColour[colour]} rounded-2xl p-4 grid grid-cols-1 gap-y-10 relative">
+	{#if !showValues}
+		<div class="flex justify-between items-center">
 			{#if editing}
-				Save
+				<div class="flex flex-col gap-1">
+					<input style="color: {colour};" type="text" bind:value={name} class="border-1 text-3xl font-semibold">
+					<div class="flex gap-1">
+						{#each colours as c}
+							<button
+								class="aspect-square rounded-[50%]"
+								style="background: {c}; aspect-ratio:1; padding:0.5rem 1rem;"
+								aria-label={c}
+								onclick={() => colour = c}
+							></button>
+						{/each}
+					</div>
+				</div>
 			{:else}
-				Edit Name
+				<h1 style="color: {colour};" class="text-3xl font-semibold">{name}</h1>
 			{/if}
+			<button onclick={()=>edit()} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full cursor-pointer">
+				{#if editing}
+					Save
+				{:else}
+					Edit Name
+				{/if}
 
+			</button>
+		</div>
+
+	<!--	<button class="m-auto p-1 border-1 rounded bg-green-400" onclick={() => addPositive()}>Add Positive</button>-->
+	<!--	<button class="m-auto p-1 border-1 rounded bg-red-600" onclick={() => addNegative()}>Add Negative</button>-->
+
+		<!-- https://getcssscan.com/css-buttons-examples "Button 82" by Josh W Comeau-->
+		<button class="button-green-pushable" onclick={()=>addPositive()}>
+			<span class="button-green-shadow"></span>
+			<span class="button-green-edge"></span>
+			<span class="button-green-front text h-30">
+				Add Positive
+			</span>
 		</button>
-	</div>
+		<button class="button-red-pushable" onclick={()=> addNegative()}>
+			<span class="button-red-shadow"></span>
+			<span class="button-red-edge"></span>
+			<span class="button-red-front text h-30">
+				Add Negative
+			</span>
+		</button>
 
-<!--	<button class="m-auto p-1 border-1 rounded bg-green-400" onclick={() => addPositive()}>Add Positive</button>-->
-<!--	<button class="m-auto p-1 border-1 rounded bg-red-600" onclick={() => addNegative()}>Add Negative</button>-->
+		<!-- WIP tailwind conversion
+		<button class="relative border-none bg-transparent p-0 cursor-pointer outline-offset-4 transition-filter duration-250
+		 select-none touch-manipulation group">
+			<!- Shadow
+			<span class="absolute top-0 left-0 w-full h-full rounded-lg bg-black/25 will-change-transform transform
+			translate-y-2 duration-100 transition-[cubic-bezier(.3,.7,.4,1)] group-hover:translate-y-3
+			group-active:translate-y-1"></span>
 
-	<!-- https://getcssscan.com/css-buttons-examples "Button 82" by Josh W Comeau-->
-	<button class="button-green-pushable">
-		<span class="button-green-shadow"></span>
-		<span class="button-green-edge"></span>
-		<span class="button-green-front text h-30">
-			Add Positive
-    	</span>
-	</button>
-	<button class="button-red-pushable">
-		<span class="button-red-shadow"></span>
-		<span class="button-red-edge"></span>
-		<span class="button-red-front text h-30">
-			Add Negative
-    	</span>
-	</button>
+			<!- Side of button
+			<span class="absolute top-0 left-0 w-full h-full rounded-lg bg-gradient-to-l from-[#550000] to-[#550000]/80">
+			</span>
 
-	<!-- WIP tailwind conversion
-	<button class="relative border-none bg-transparent p-0 cursor-pointer outline-offset-4 transition-filter duration-250
-	 select-none touch-manipulation group">
-		<!- Shadow
-		<span class="absolute top-0 left-0 w-full h-full rounded-lg bg-black/25 will-change-transform transform
-		translate-y-2 duration-100 transition-[cubic-bezier(.3,.7,.4,1)] group-hover:translate-y-3
-		group-active:translate-y-1"></span>
-
-		<!- Side of button
-		<span class="absolute top-0 left-0 w-full h-full rounded-lg bg-gradient-to-l from-[#550000] to-[#550000]/80">
-		</span>
-
-		<!- Rest of button
-		<span class="block relative py-3 px-6 rounded-lg text-white bg-[#FF2B2B] will-change-transform
-		 -translate-y-1 transition-transform duration-100 transform-[cubic-bezier(.3,.7,.4,1)]
-		 group-hover:-translate-y-2 group-active:-translate-y-1">
-			Test
-		</span>
-	</button> -->
+			<!- Rest of button
+			<span class="block relative py-3 px-6 rounded-lg text-white bg-[#FF2B2B] will-change-transform
+			 -translate-y-1 transition-transform duration-100 transform-[cubic-bezier(.3,.7,.4,1)]
+			 group-hover:-translate-y-2 group-active:-translate-y-1">
+				Test
+			</span>
+		</button> -->
+	{:else}
+		<p class="text-white">Positive: {positive}</p>
+		<p class="text-white">Negative: {negative}</p>
+		<p class="text-white">Difference: {positive - negative}</p>
+	{/if}
 </div>
