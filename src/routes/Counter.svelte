@@ -230,11 +230,11 @@
 
 <div class="border-2 {borderColour[colour]} rounded-2xl p-4 grid grid-cols-1 gap-y-10 relative">
 	{#if !showValues}
-		<div class="flex justify-between items-center">
+		<div class="flex justify-between items-center max-w-auto">
 			{#if editing}
-				<div class="flex flex-col gap-1">
+				<div class="flex flex-col gap-1 max-w-3/4">
 					<input style="color: {colour};" type="text" bind:value={name} class="border-1 text-3xl font-semibold">
-					<div class="flex gap-1">
+					<div class="flex gap-1 justify-between">
 						{#each colours as c}
 							<button
 								class="aspect-square rounded-[50%]"
@@ -297,8 +297,11 @@
 			</span>
 		</button> -->
 	{:else}
-		<p class="text-white">Positive: {positive}</p>
-		<p class="text-white">Negative: {negative}</p>
-		<p class="text-white">Difference: {positive - negative}</p>
+		<div>
+			<h1 style="color: {colour};" class="text-3xl font-semibold">{name}</h1>
+			<p class="text-white">Positive: {positive}</p>
+			<p class="text-white">Negative: {negative}</p>
+			<p class="{(positive-negative) >= 0 ? positive-negative > 0 ? 'text-green-500' : 'text-white' : 'text-red-500'}">Difference: {positive - negative}</p>
+		</div>
 	{/if}
 </div>
