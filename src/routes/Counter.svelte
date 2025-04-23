@@ -299,9 +299,13 @@
 	{:else}
 		<div>
 			<h1 style="color: {colour};" class="text-3xl font-semibold">{name}</h1>
-			<p class="text-white">Positive: {positive}</p>
-			<p class="text-white">Negative: {negative}</p>
-			<p class="{(positive-negative) >= 0 ? positive-negative > 0 ? 'text-green-500' : 'text-white' : 'text-red-500'}">Difference: {positive - negative}</p>
+			<div class="flex justify-center text-center items-center">
+				<div class="border-r-2 border-white pr-2 flex-1/3">
+					<p class="text-white text-lg">Positives: {positive}</p>
+					<p class="text-white text-lg">Negatives: {negative}</p>
+				</div>
+				<p class="flex-1/4 text-lg {(positive-negative) >= 0 ? positive-negative > 0 ? 'text-green-500' : 'text-white' : 'text-red-500'}">Total: {positive - negative}</p>
+			</div>
 		</div>
 	{/if}
 </div>
